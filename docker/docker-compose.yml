@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+  web:
+    image: noel
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - common.env
+    volumes:
+      - /home/silas/webdev/noel/static:/usr/src/app/static
+      - storage:/usr/src/app/storage
+      - /home/silas/webdev/noel/main:/usr/src/app/main
+    command: gunicorn --reload --bind 0.0.0.0:8001 noel.wsgi
+
+  workers-session:
+    image: noel
+    depends_on:
+      - web
+    env_file:
+      - common.env
+    volumes:
+      - storage:/usr/src/app/storage
+      - /home/silas/webdev/noel/main:/usr/src/app/main
+    command: celery -A noel worker -l info -c 2 -Q default -n worker_default@%h
+
+  workers-extract:
+    image: noel
+    depends_on:
+      - web
+    env_file:
+      - common.env
+    volumes:
+      - storage:/usr/src/app/storage
+      - /home/silas/webdev/noel/main:/usr/src/app/main
+    command: celery -A noel worker -l info -c 5 -Q extract -n worker_default@%h
+
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - web
+    volumes:
+      - ${PWD}/config/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ${PWD}/config/cert.pem:/etc/nginx/conf.d/cert.pem
+      - ${PWD}/config/key.pem:/etc/nginx/conf.d/key.pem
+      - /home/silas/webdev/noel/static:/usr/src/app/static
+    ports:
+      - 8000:80
+      - 8443:443
+
+  redis:
+    image: redis:alpine
+
+  postgres:
+    image: postgres:alpine
+    env_file:
+      - common.env
+    volumes:
+      - database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  database: {}
+  static: {}
+  storage: {}

@@ -1,0 +1,22 @@
+{% load pic_filters %}
+<div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/3">
+    <div class="mx-1 my-3 shadow">
+        <div class="card-pic w-full relative">
+            <img src="{{ pic.thumb_path | pic_thumb }}" style="object-fit: cover"
+                 class="h-24 lg:h-32 w-full block">
+            <div class="card-pic-overlay absolute bg-{{ pic.type }}-faded h-full w-full pin-t pin-l">
+                <div class="absolute pin-b w-full p-2 bg-{{ pic.type }} text-{{ pic.type | type_text_color }}">
+                    <h4 class="font-bold">Fonte:</h4>
+                    <p class="capitalize">
+                        {{ pic.type }}
+                    </p>
+                    <h4 class="font-bold">Status:</h4>
+                    <p class="capitalize">
+                        {{ pic.status | capfirst }}
+                    </p>
+                </div>
+            </div>
+            <div class="w-2 h-full absolute pin-t pin-r bg-{{ pic.status | pic_border }}"></div>
+        </div>
+    </div>
+</div>

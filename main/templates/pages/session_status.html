@@ -1,0 +1,49 @@
+{% extends 'generics/page.html' %}
+{% block content %}
+    <div class="w-full flex flex-col items-center justify-center my-4">
+        <div class="flex flex-col rounded w-2/3 mb-4 p-2 bg-grey-lighter">
+            <div class="w-full">
+                <p class="p-3 bg-primary border-b-2 border-primary-dark rounded text-white font-bold flex flex-row flex-wrap">
+                    <span class="mx-2">Sessione {{ session.id }}</span>
+                    <a href="/reset/{{ session.id }}" class="mx-2 px-2 font-bold text-red bg-white">RESET STATUS</a>
+                </p>
+            </div>
+            <div class="p-4 bg-grey-lighter flex flex-col items-center justify-center">
+                <div class="w-full flex flex-row">
+                    {% for status in statuses %}
+                        {% include "components/status_block.html" with status=status current_status=session.status %}
+                    {% endfor %}
+                </div>
+                <h3 class="session-status capitalize mb-2">{{ session.status }}</h3>
+                <div id="session-progress-bar" class="h-8 bg-white w-full relative"
+                     data-session-id="{{ session.id }}">
+                    <div class="bar h-full"></div>
+                    <div class="absolute w-full h-full pin-t pin-b flex justify-center items-center font-bold"><span
+                            class="percentage">{{ session.progress }}</span></div>
+                </div>
+                <hr class="h-px w-full bg-grey">
+                <div class="h-86 w-full flex flex-wrap overflow-y-scroll">
+                    {% for pic in pics %}
+                        {% include "components/picture_card.html" with pic=pic %}
+                    {% endfor %}
+                </div>
+                {% for group in groups %}
+                    <div class="w-full mx-2 my-2 border p-2">
+                        <h3 class="capitalize mb-2 text-green-darker border-b-2 border-green-dark pb-1">
+                            Cluster {{ group.type | capfirst }} {% if group.original %} - Originale {% endif %}
+                        </h3>
+                        <div class="flex flex-wrap">
+                            {% for p in group.pics %}
+                                {% include "components/small_picture_card.html" with pic=p %}
+                            {% empty %}
+                                Questo cluster è vuoto
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'generics/centered_container.html' %}
+
+{% block centered_title %}
+Upload immagini
+{% endblock %}
+
+{% block centered_content %}
+<div class="w-full m-2">
+    <p class="p-3 bg-primary border-b-2 border-primary-dark rounded text-white font-bold">
+        Residual Noise Clustering e Smartphone Recognition
+    </p>
+</div>
+<form id="form-pictures" class="w-full" action="/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-2 py-4 px-4 bg-white border w-full font-bold text-primary-dark block">
+        <p class="mb-2">
+            Per iniziare il processo di classificazione delle immagini sui tuoi account social, effettua l'upload di
+            alcune immagini provenienti dal tuo smartphone.
+        </p>
+        <label class="w-full flex flex-col items-center"
+               for="{{ form.pics.id_for_label }}">
+            <div class="hidden">
+                {{ form.pics }}
+            </div>
+            <div class="w-full lg:w-1/2">
+            <span class="p-2 bg-primary cursor-pointer text-white flex items-center justify-center rounded-full hover:bg-primary-darker hover:shadow"
+                  id="pics_select">Seleziona Immagini</span>
+            </div>
+            {% if form.pics.errors %}
+            <div class="p-2 bg-grey-light w-full mt-2">
+                {% for error in form.pics.errors %}
+                <div class="font-bold">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </label>
+        <div>
+            {{ form.non_field_errors }}
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button class="bg-primary px-4 py-2 text-white rounded-full hover:bg-primary-darker hover:shadow"
+                id="pics_upload"
+                onclick="this.disabled = true; this.classList.add('cursor-not-allowed'); this.form.submit(); document.getElementById('id_pics').disabled = true; ">
+            Upload
+        </button>
+    </div>
+</form>
+{% endblock %}

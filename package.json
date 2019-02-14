@@ -1,0 +1,33 @@
+{
+  "scripts": {
+    "build-scripts": "webpack --config webpack.scripts.config.js",
+    "build-styles": "webpack --config webpack.styles.config.js",
+    "build-production": "NODE_ENV=production yarn build-scripts && yarn build-styles",
+    "watch": "webpack --config webpack.scripts.config.js --watch & webpack --config webpack.styles.config.js --watch"
+  },
+  "dependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-typescript": "^7.1.0",
+    "@types/axios": "^0.14.0",
+    "autoprefixer": "^9.4.5",
+    "axios": "^0.18.0",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^1.0.0",
+    "exports-loader": "^0.7.0",
+    "extract-loader": "^3.0.0",
+    "file-loader": "^2.0.0",
+    "imports-loader": "^0.8.0",
+    "node-sass": "^4.9.3",
+    "postcss": "^7.0.11",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "tailwindcss": "^0.7.3",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.3",
+    "webpack": "^4.20.2"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.1.2"
+  }
+}

@@ -1,0 +1,27 @@
+**
+
+# Django files
+!/main/**/*
+!/noel/**/*
+!/manage.py
+!/requirements.txt
+
+# Assets
+!/assets/**/*
+!/package.json
+!/yarn.lock
+!/.babelrc
+!/tsconfig.json
+!/postcss.config.js
+!/tailwind.js
+!/webpack.scripts.config.js
+!/webpack.styles.config.js
+
+# BM3D installer
+!/rn-extract-link-bm3d-executable/**/*
+
+# Configs
+!/config/**/*
+
+#
+**/__pycache__

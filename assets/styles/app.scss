@@ -1,0 +1,79 @@
+@tailwind preflight;
+@tailwind components;
+@tailwind utilities;
+
+.centered-container > *:first-child {
+  padding: 10pt;
+  border: 1pt solid black;
+  border-radius: 5px;
+}
+
+.trans {
+  transition: all .5s ease-in-out;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Raleway', sans-serif;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  min-height: 100%;
+  font-family: 'Nunito', "Helvetica Neue", Arial, sans-serif;
+}
+
+/*label{*/
+/*margin-right: 2rem;*/
+/*}*/
+
+#form-pictures input {
+  display: block;
+  padding-bottom: 1rem;
+  /*width: 50%;*/
+  width: 100%;
+}
+
+*:focus {
+  outline: none;
+}
+
+input[type=number] {
+  padding: 1rem;
+  border-radius: 10rem;
+  text-align: center;
+  border: 1pt solid grey;
+}
+
+.card-pic {
+  & > .card-pic-overlay {
+    transition: opacity 0.3s;
+    @apply opacity-0;
+  }
+
+  &:hover {
+    .card-pic-overlay {
+      @apply opacity-100;
+    }
+  }
+}
+
+a {
+  @apply text-primary;
+}
+
+.percentage {
+  &::after {
+    content: '%';
+  }
+}
+

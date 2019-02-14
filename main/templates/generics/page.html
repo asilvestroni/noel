@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Pattern Noise Extraction and User Linking</title>
+
+
+    <link rel="stylesheet" href="{% static 'main/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,700|Raleway:300,700" rel="stylesheet">
+
+    {% block customhead %}
+    {% endblock %}
+
+</head>
+<body class="flex flex-col relative {% block centered %}{% endblock %} bg-primary-darkest">
+<div class="flex-1 flex w-full items-center flex-col mb-12">
+    <div class="container h-full">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+
+{% include "components/footer.html" %}
+<script src="{% static 'main/scripts.min.js' %}"></script>
+</body>
+</html>
