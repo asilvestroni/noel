@@ -1,0 +1,3 @@
+[submodule "noel-bm3d-executable"]
+	path = noel-bm3d-executable
+	url = https://github.com/Silver96/noel-bm3d-executable.git
