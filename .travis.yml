@@ -15,5 +15,10 @@ env:
     - POSTGRES_DB=django_test
     - POSTGRES_USER=postgres
     - POSTGRES_PASS=
+    - DJANGO_SETTINGS_MODULE=noel.settings
 services:
   - postgresql
+notifications:
+  email:
+    on_failure: never
+    on_success: never
