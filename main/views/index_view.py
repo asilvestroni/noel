@@ -16,27 +16,6 @@ from main.models import Session, Picture
 from main.forms import UploadPicsForm
 
 
-def handle_file_upload(file: UploadedFile, ses: Session):
-    """
-    Handles the upload of a picture file
-    :param file: An UploadedFile coming from the form
-    :param ses: The session to which Pictures will be linked
-    """
-    pic = Picture(session=ses, type='original', ext=path.splitext(file.name)[1])
-    pic.save()
-
-    filename = pic.pic_path
-    print('Saving ' + filename)
-
-    try:
-        with open(filename, 'wb+') as pic_file:
-            for chunk in file.chunks():
-                pic_file.write(chunk)
-
-    except IOError:
-        print('Error while saving ' + filename)
-        pic.delete()
-
 
 class IndexView(FormView):
     """

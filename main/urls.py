@@ -14,5 +14,6 @@ urlpatterns = [
     path('sessions/<id>', views.SessionStatusView.as_view()),
     path('sessions/<id>/data', views.SessionDataView.as_view()),
     path('reset/<id>', views.ResetSessionStatusView.as_view()),
+    path('manage-pics/', views.ManagePicturesView.as_view()),
     # re_path('^.*$', RedirectView.as_view(url='/'))
     ]

@@ -13,9 +13,9 @@ jobs:
     - stage: test
       script:
         - python manage.py test main.tests
-    - stage: build
-      script:
-        - make docker-build
+#    - stage: build
+#      script:
+#        - make docker-build
 env:
   global:
     - POSTGRES_DB=django_test

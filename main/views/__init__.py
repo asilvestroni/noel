@@ -10,3 +10,4 @@ from .social_register_fb_token import RegisterFbTokenView
 from .session_status import SessionStatusView
 from .reset_session_status import ResetSessionStatusView
 from .session_data import SessionDataView
+from .manage_pictures import ManagePicturesView

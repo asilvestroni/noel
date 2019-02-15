@@ -3,9 +3,11 @@
 #  Residual Noise Extraction and Smartphone Linking
 #
 # ----------------------------
+import os
 
 from django.core.validators import RegexValidator
 from django.db import models
+
 
 # from main.logic.common.funcs import get_session_progress
 
@@ -21,6 +23,16 @@ class Session(models.Model):
     id = models.CharField(max_length=64, validators=[RegexValidator(regex='^.{64}$')], primary_key=True)
     status = models.CharField(max_length=50)
     progress = models.IntegerField(default=0)
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
+
+        originals_dir = '{}/original'.format(self.session_dir)
+        if not os.path.isdir(originals_dir):
+            os.makedirs(originals_dir)
+            os.makedirs(originals_dir + '/preps')
+            os.makedirs(originals_dir + '/noises')
 
     @property
     def session_dir(self):

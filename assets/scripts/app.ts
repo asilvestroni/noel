@@ -1,3 +1,6 @@
+// Include csrf token in window object
+import './include-csrf';
+
 // Pictures Upload page script
 import './upload-pics';
 
