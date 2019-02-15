@@ -19,6 +19,9 @@ jobs:
           - POSTGRES_USER=postgres
           - POSTGRES_PASS=
           - DJANGO_SETTINGS_MODULE=noel.settings
+    - stage: build
+      script:
+        - make docker-build
 services:
   - postgresql
   - redis-server
