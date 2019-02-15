@@ -18,7 +18,7 @@
 !/webpack.styles.config.js
 
 # BM3D installer
-!/rn-extract-link-bm3d-executable/**/*
+!/noel-bm3d-executable/**/*
 
 # Configs
 !/config/**/*

@@ -10,7 +10,7 @@ cycler==0.10.0
 Cython==0.29.2
 dask==1.0.0
 decorator==4.3.0
-Django==2.1.4
+Django==2.1.7
 django-dotenv==1.4.2
 facebook-sdk==3.1.0
 gunicorn==19.9.0
@@ -34,7 +34,7 @@ pyparsing==2.3.0
 python-dateutil==2.7.5
 pytz==2018.7
 PyWavelets==1.0.1
-PyYAML==3.13
+PyYAML==4.2b1
 redis==2.10.6
 requests==2.21.0
 scikit-image==0.14.1

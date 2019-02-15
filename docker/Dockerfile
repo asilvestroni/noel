@@ -39,7 +39,7 @@ RUN mkdir -p /usr/bm3d
 # Install bm3d and the matlab runtime
 # (NOTE: requires a matlab-compiled installer for the bm3d repo, see readme)
 WORKDIR /usr/bm3d
-COPY ./rn-extract-link-bm3d-executable/bm3d.install /usr/bm3d
+COPY ./noel-bm3d-executable/bm3d.install /usr/bm3d
 RUN chmod +x bm3d.install
 RUN ./bm3d.install -mode silent -agreeToLicense yes -destinationFolder /usr/bm3d
 RUN rm bm3d.install

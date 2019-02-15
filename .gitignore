@@ -115,6 +115,5 @@ node_modules/
 
 run-local-server.sh
 proto*
-rn-extract-link-bm3d-executable
-
+noel-bm3d-executable
 *.pem
