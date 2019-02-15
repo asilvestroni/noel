@@ -1,4 +1,4 @@
-# noel
+# noel [![Build Status](https://travis-ci.com/Silver96/noel.svg?branch=master)](https://travis-ci.com/Silver96/noel)
 Main repository for the Pattern Noise Clustering and Smartphone Recognition project.
 
 This repository contains the code used for a research project regarding residual noise
