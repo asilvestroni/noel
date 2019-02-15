@@ -1,0 +1,17 @@
+languge: python
+python:
+  - "3.6"
+install:
+  - cp .env.test .env
+  - pip install -r requirements.txt
+before_script:
+  - psql -c 'create database django_test;' -U postgres
+script:
+  - python manage.py test main.tests
+env:
+  global:
+    - POSTGRES_DB=django_test
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASS=
+services:
+  - postgresql
