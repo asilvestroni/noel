@@ -1,16 +1,32 @@
 language: python
+cache: pip
 python:
   - "3.6"
 install:
   - pip install -r requirements.txt
 before_script:
   - psql -c 'create database django_test;' -U postgres
-script:
-  - python manage.py test main.tests
-env:
-  global:
-    - POSTGRES_DB=django_test
-    - POSTGRES_USER=postgres
-    - POSTGRES_PASS=
+  - python manage.py makemigrations
+  - python manage.py migrate
+jobs:
+  include:
+    - stage: test
+      if: tag IS present
+      script:
+        - python manage.py test main.tests
+      env:
+        global:
+          - POSTGRES_DB=django_test
+          - POSTGRES_USER=postgres
+          - POSTGRES_PASS=
+          - DJANGO_SETTINGS_MODULE=noel.settings
 services:
   - postgresql
+  - redis-server
+notifications:
+  email:
+    on_failure: never
+    on_success: never
+branches:
+  only:
+    - master
