@@ -13,15 +13,15 @@ jobs:
     - stage: test
       script:
         - python manage.py test main.tests
-      env:
-        global:
-          - POSTGRES_DB=django_test
-          - POSTGRES_USER=postgres
-          - POSTGRES_PASS=
-          - DJANGO_SETTINGS_MODULE=noel.settings
     - stage: build
       script:
         - make docker-build
+env:
+  global:
+    - POSTGRES_DB=django_test
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASS=
+    - DJANGO_SETTINGS_MODULE=noel.settings
 services:
   - postgresql
   - redis-server
