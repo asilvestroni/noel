@@ -54,7 +54,8 @@ function beforeRemoveFileHandler(item: any) {
 }
 
 function setButtonState(state: boolean) {
-    uploadButton!.disabled = state;
+    console.log(!state);
+    uploadButton!.disabled = !state;
     if (state) {
         uploadButton!.classList.remove('disabled');
     } else {
@@ -81,7 +82,7 @@ if (filepondWrapper) {
         allowRevert: false,
         maxFiles: 30,
         required: true,
-        maxParallelUploads: 3,
+        maxParallelUploads: 5,
         name: 'filepond',
         instantUpload: false,
         server: {
@@ -104,6 +105,8 @@ if (filepondWrapper) {
 
     filepondWrapper.appendChild(pond.element);
     uploadButton!.addEventListener('click', async () => {
+        setButtonState(false);
         await pond.processFiles();
+        window.location.href = '/socials'
     });
 }

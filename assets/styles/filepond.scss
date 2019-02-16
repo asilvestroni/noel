@@ -15,6 +15,10 @@
   cursor: pointer;
 }
 
+.filepond--action-process-item {
+  visibility: hidden;
+}
+
 /* the text color of the drop label*/
 .filepond--drop-label {
   @apply text-white;

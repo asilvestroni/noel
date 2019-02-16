@@ -2,10 +2,24 @@ import axios, {AxiosPromise} from 'axios';
 
 const progressBarElement = document.getElementById('session-progress-bar');
 const statusElements = document.getElementsByClassName('session-status');
+const loadingIndicators = document.getElementsByClassName('loading-indicator');
+
 let bar: Element | null = null;
 let percentage: Element | null = null;
 
+function setAsLoading(value: boolean) {
+    for (let i = 0; i < loadingIndicators.length; i++) {
+        const indicator = loadingIndicators[i];
+        if (value) {
+            indicator.classList.add('loading');
+        } else {
+            indicator.classList.remove('loading');
+        }
+    }
+}
+
 async function updateProgress(sessionId: string) {
+    setAsLoading(true);
     const result = (await axios.get(`/sessions/${sessionId}/data`)) as {
         data:
             { progress: number, status: string, id: string }
@@ -23,6 +37,9 @@ async function updateProgress(sessionId: string) {
         bar.style.width = `${progress}%`;
         percentage.innerText = progress;
     }
+    setTimeout(() => {
+        setAsLoading(false);
+    }, 1000);
 }
 
 if (progressBarElement) {
@@ -31,5 +48,5 @@ if (progressBarElement) {
     const attribute = progressBarElement.attributes.getNamedItem('data-session-id');
 
     const sessionId = attribute ? attribute.value : '';
-    setInterval(updateProgress, 1000, sessionId);
+    setInterval(updateProgress, 5000, sessionId);
 }

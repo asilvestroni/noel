@@ -14,7 +14,9 @@ async function saveToken(response: { authResponse: { accessToken: string } }) {
     if (!token) return;
     const csrf: string = (document.getElementsByName("csrfmiddlewaretoken")[0] as HTMLInputElement).value;
     const result = await axios.put('/socials/fb_token', {}, {params: {token}, headers: {'X-CSRFToken': csrf}});
-    allowSessionProcessing(result.data);
+    if (result.data) {
+        allowSessionProcessing(result.data);
+    }
 }
 
 window.saveToken = saveToken;

@@ -20,12 +20,12 @@ class RegisterFbTokenView(generic.UpdateView):
         Method accessed via ajax request from the social linking view, Graph API returns a token using PUT
         """
 
-        ses_id = request.session.session_key
+        session_id = request.session.get('session_id')
         token = request.GET.get('token', '')
 
         if len(token) != 0:
             try:
-                session = Session.objects.get(id=ses_id)
+                session = Session.objects.get(id=session_id)
                 tokens = SocialToken.objects.filter(session=session, type='facebook')
                 if tokens.count() == 0:
                     SocialToken(session=session, type="facebook", key=token).save()
@@ -33,5 +33,6 @@ class RegisterFbTokenView(generic.UpdateView):
                     print('User owns a token already')
             except Session.DoesNotExist as e:
                 print('Tried to store token for non existing session')
-
-        return HttpResponse(ses_id)
+                return HttpResponse(None)
+            
+        return HttpResponse(session_id)

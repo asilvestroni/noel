@@ -9,6 +9,7 @@ from django.core.files.uploadedfile import UploadedFile
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
+from uuid import uuid4 as uuid
 from django.views.generic import View
 
 from main.models import Session, Picture
@@ -44,10 +45,11 @@ class ManagePicturesView(View):
 
     def post(self, request: WSGIRequest):
         try:
-            session = Session.objects.get(id=request.session.session_key)
+            session = Session.objects.get(id=request.session.get('session_id'))
         except Session.DoesNotExist:
-            session = Session(id=request.session.session_key, status='initial status')
+            session = Session(id=uuid().__str__(), status='initial status')
             session.save()
+            request.session['session_id'] = session.id
         files = request.FILES.getlist('filepond')
 
         results = []

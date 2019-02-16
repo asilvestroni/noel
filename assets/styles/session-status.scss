@@ -1,0 +1,9 @@
+.status-loading {
+  &:not(.loading) {
+    visibility: hidden;
+  }
+}
+
+.progress-label{
+  @apply absolute w-full h-full pin-t pin-b flex justify-center items-center font-bold text-black;
+}
