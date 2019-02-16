@@ -1,0 +1,18 @@
+.card-pic {
+  @apply rounded;
+
+  img {
+    @apply h-32 w-full block;
+  }
+
+  & > .card-pic-overlay {
+    transition: opacity 0.3s;
+    @apply opacity-0 h-full w-full pin-t pin-l;
+  }
+
+  &:hover {
+    .card-pic-overlay {
+      @apply opacity-100;
+    }
+  }
+}

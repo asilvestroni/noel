@@ -54,7 +54,6 @@ function beforeRemoveFileHandler(item: any) {
 }
 
 function setButtonState(state: boolean) {
-    console.log(!state);
     uploadButton!.disabled = !state;
     if (state) {
         uploadButton!.classList.remove('disabled');
@@ -96,7 +95,8 @@ if (filepondWrapper) {
             },
             fetch: null,
             revert: null,
-        }
+        },
+        labelIdle: 'Trascina qui le tue foto oppure <span class="filepond--label-action"> Sfoglia </span>'
     });
     pond.beforeAddFile = beforeAddFileHandler;
     pond.beforeRemoveFile = beforeRemoveFileHandler;
@@ -106,6 +106,9 @@ if (filepondWrapper) {
     filepondWrapper.appendChild(pond.element);
     uploadButton!.addEventListener('click', async () => {
         setButtonState(false);
+        filepondWrapper.classList.add('drop-disabled');
+        pond.allowDrop = false;
+        pond.allowPaste = false;
         await pond.processFiles();
         window.location.href = '/socials'
     });

@@ -20,7 +20,7 @@
                      data-session-id="{{ session.id }}">
                     <div class="bar h-full bg-primary-light rounded" style="width: {{ session.progress }}%"></div>
                     <div class="progress-label"><span
-                            class="percentage">{{ session.progress }}</span></div>
+                            class="percentage">{{ session.progress|floatformat:"0" }}</span></div>
                 </div>
                 <hr class="h-px w-full bg-grey">
                 <div class="h-86 w-full flex flex-wrap overflow-y-scroll">

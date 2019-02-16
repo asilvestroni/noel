@@ -50,19 +50,6 @@ input[type=number] {
   border: 1pt solid grey;
 }
 
-.card-pic {
-  & > .card-pic-overlay {
-    transition: opacity 0.3s;
-    @apply opacity-0;
-  }
-
-  &:hover {
-    .card-pic-overlay {
-      @apply opacity-100;
-    }
-  }
-}
-
 a {
   @apply text-primary;
 }

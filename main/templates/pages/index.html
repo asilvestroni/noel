@@ -10,7 +10,7 @@
             Residual Noise Clustering e Smartphone Recognition
         </p>
     </div>
-    <form id="form-pictures" class="w-full" action="/" method="post" enctype="multipart/form-data">
+    <div id="form-pictures" class="w-full">
         {% csrf_token %}
         <div class="mb-2 py-4 px-4 bg-white border w-full font-bold text-primary-dark block">
             <p class="mb-2">
@@ -50,5 +50,5 @@
                 {{ form.non_field_errors }}
             </div>
         </div>
-    </form>
+    </div>
 {% endblock %}

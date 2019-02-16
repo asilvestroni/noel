@@ -51,6 +51,7 @@ let colors = {
     'primary-dark': '#08A045',
     'primary-darker': '#0B6E4F',
     'primary-darkest': '#073B3A',
+    'primary-faded': '#0b6e4f88',
 
 
     'success': '#289d6b',

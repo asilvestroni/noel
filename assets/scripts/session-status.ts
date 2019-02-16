@@ -35,7 +35,7 @@ async function updateProgress(sessionId: string) {
     }
     if (bar && percentage) {
         bar.style.width = `${progress}%`;
-        percentage.innerText = progress;
+        percentage.innerText = progress.toFixed(0);
     }
     setTimeout(() => {
         setAsLoading(false);
