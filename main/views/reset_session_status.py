@@ -7,6 +7,8 @@
 import os
 from django.views.generic import View
 from django.shortcuts import redirect
+
+from main.logic.common import const
 from main.models import Session, PictureCluster, Picture
 
 
@@ -15,6 +17,7 @@ class ResetSessionStatusView(View):
     """
     Helper View, used to reset session status during debug
     """
+
     def get(self, *args, **kwargs):
         """
         Resets the session corresponding to the given session ID and redirects to its status page
@@ -23,7 +26,7 @@ class ResetSessionStatusView(View):
             # Reset session
             ses = Session.objects.get(id=kwargs.get('id', ''))
             ses.progress = 0
-            ses.status = "initial status"
+            ses.stage = const.session_statuses['wait']
             ses.save()
 
             # Reset extracting Pictures status

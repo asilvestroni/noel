@@ -22,7 +22,8 @@ class Session(models.Model):
 
     id = models.CharField(max_length=64, validators=[RegexValidator(regex='^.{64}$')], primary_key=True)
     status = models.CharField(max_length=50)
-    progress = models.IntegerField(default=0)
+    progress = models.FloatField(default=0)
+    stage = models.CharField(max_length=20)
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
@@ -41,13 +42,13 @@ class Session(models.Model):
         """
         return 'storage/{}'.format(self.id)
 
-    def update_and_log_status(self, new_status: str):
+    def update_and_log_status(self, step: str = '', progress: float = 0):
         """
         Updates session status and logs it to console
 
-        :param new_status: The status to be set
+        :param step: session stage step that has been reached
+        :param progress: stage progress
         """
-        self.status = new_status
-        # self.progress = get_session_progress(new_status)
-        self.save()
-        print('[{}]: {}'.format(self.id, new_status))
+        from main.logic.update_session import next_session_status
+        status = next_session_status(self, step=step, progress=progress)
+        print('[{}]: {} +{}%'.format(self.id, status, progress))

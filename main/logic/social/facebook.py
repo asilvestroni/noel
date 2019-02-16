@@ -9,27 +9,27 @@ import facebook
 from os import makedirs
 from django.db.models import QuerySet
 from main.logic.common import timeit, download_pic, const
-from main.models import Session, Picture
+from main.models import Session, Picture, SocialToken
 
 
 @timeit
-def handle_downloads(ses: Session, tokens: QuerySet):
+def handle_downloads(ses: Session, token: SocialToken):
     """
         Handle downloads from Facebook, given a session and its tokens
 
         :param ses: Session to which pictures belong
-        :param tokens: SN auth tokens associated with the session (avoids a query)
+        :param token: Facebook SocialToken
         """
     # TODO: handle missing token
 
     # Connects to Facebook's GraphAPI
-    token = tokens.get(type='facebook')
     graph = facebook.GraphAPI(access_token=token.key)
 
     if len(Picture.objects.filter(session=ses, type='facebook')) == 0:
         try:
             # Send a custom request for pictures and make a list with their urls
-            pics = list(map(lambda p: p['images'][0]['source'], graph.request('me/photos/uploaded?fields=images&limit={}'.format(const.fb_max_pictures)).get('data')))
+            pics = list(map(lambda p: p['images'][0]['source'], graph.request(
+                'me/photos/uploaded?fields=images&limit={}'.format(const.fb_max_pictures)).get('data')))
 
             n_pics = len(pics)
 
@@ -41,7 +41,8 @@ def handle_downloads(ses: Session, tokens: QuerySet):
             makedirs(pics_dir + '/noises', exist_ok=True)
 
             for pic in enumerate(pics):
-                ses.update_and_log_status('Gathering Facebook Pictures: {}/{}'.format(pic[0] + 1, n_pics))
+                ses.update_and_log_status('facebook',
+                                          1 / n_pics * 100)  # 'Gathering Facebook Pictures: {}/{}'.format(pic[0] + 1, n_pics))
                 model = Picture.objects.create(session=ses, type='facebook')
                 download_pic(model, pic[1])
         except Exception as e:

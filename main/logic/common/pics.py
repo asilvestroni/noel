@@ -109,18 +109,15 @@ def pics_residual_noise(ses: Session, type: str = "original"):
     :param ses: Session to which pictures belong
     :param type: The type of pictures for which thumbnails are being generated
     """
-    import os
     pics = Picture.objects.filter(session=ses, type=type)
 
     # Preprocess the provided pictures
     preprocessed = pics_preprocess(pics)
 
-    ses.update_and_log_status('Computing Residual Noise ({}): 0/{}'.format(type, len(preprocessed)))
-
     # Generate a list of children task to be launched
     tasks = []
     for pic in preprocessed:
-        tasks.append(extract_from_pic.s(pic.id))
+        tasks.append(extract_from_pic.s(pic.id, type))
 
     # Call all the children tasks and wait for them to return
     result: GroupResult
@@ -131,7 +128,7 @@ def pics_residual_noise(ses: Session, type: str = "original"):
 
 
 @shared_task
-def extract_from_pic(pic_id: int):
+def extract_from_pic(pic_id: int, type: str):
     """
     Task that extracts residual noise from a picture
 
@@ -142,12 +139,10 @@ def extract_from_pic(pic_id: int):
     pic = Picture.objects.get(id=pic_id)
     pic.extract()
 
-    # Update session status with the current count of completed pictures
-    # TODO: find a better way to keep track of status
     total = pic.session.picture_set.exclude(status=const.status_invalid_size).filter(type=pic.type)
-    done = total.filter(status=const.status_extracted)
+    done = total.filter(status=const.status_extracted).count()
 
-    pic.session.update_and_log_status('Computing Residual Noise ({}): {}/{}'.format(pic.type, len(done), len(total)))
+    pic.session.update_and_log_status(type, done/total.count()*100)
 
 
 @timeit

@@ -6,6 +6,8 @@
 # ----------------------------
 
 import os
+from typing import Callable
+
 import main.logic.social.facebook as fb
 
 from .common import status_extracted, generate_thumbnails
@@ -39,7 +41,6 @@ def process(ses_id: str, options: dict = {'skip': []}):
 
     ses = Session.objects.get(id=ses_id)
     try:
-
         # Acquire the tokens owned by the session
         tokens = SocialToken.objects.filter(session=ses)
 
@@ -48,15 +49,23 @@ def process(ses_id: str, options: dict = {'skip': []}):
             Called to download from all of SNs the Session has access to
             """
 
+            def fetch_pictures(token_type: str, handler: Callable):
+                try:
+                    token = tokens.get(type=token_type)
+                    handler(ses, token)
+                except SocialToken.DoesNotExist:
+                    print('Could not fetch {} pictures'.format(token_type))
+
             # Add social download handlers here
             if len(tokens) > 0:
-                fb.handle_downloads(ses, tokens)
+                fetch_pictures('facebook', fb.handle_downloads)
+                ses.update_and_log_status('final')
 
         generate_thumbnails(ses)
 
         # Download all SNs pictures for the session
         if 'social_download' not in skip:
-            ses.update_and_log_status('gathering pics')
+            ses.update_and_log_status()
             handle_social_downloads()
 
         # Creates the cluster where all original pictures will be contained
@@ -64,7 +73,7 @@ def process(ses_id: str, options: dict = {'skip': []}):
                                                                 label="original", original=True)[0]
         # Extract Residual Noise from original pictures
         if 'rn_original' not in skip:
-            ses.update_and_log_status('computing residual noise for original pictures')
+            ses.update_and_log_status('original')
 
             pics_residual_noise(ses, 'original')
 
@@ -81,7 +90,6 @@ def process(ses_id: str, options: dict = {'skip': []}):
 
         # Compute Pattern Noise for the original cluster
         if 'pn_original' not in skip:
-            ses.update_and_log_status('computing original cluster pattern noise')
             cluster_pattern_noise(original_cluster)
 
         # Extract Residual Noise from SN pictures
@@ -89,11 +97,14 @@ def process(ses_id: str, options: dict = {'skip': []}):
 
             # Cycle through all the authorized SNs
             for token in tokens:
-                ses.update_and_log_status('computing residual noise for {} pictures'.format(token.type))
+                ses.update_and_log_status(token.type)
 
                 pics_residual_noise(ses, type=token.type)
 
-                ses.update_and_log_status('computing clusters for {} pictures'.format(token.type))
+            ses.update_and_log_status('final')
+
+            for token in tokens:
+                ses.update_and_log_status(token.type)
 
                 # Cluster the pictures based on their Residual Noises
                 clusterize(ses, cluster_type=token.type)
@@ -104,7 +115,7 @@ def process(ses_id: str, options: dict = {'skip': []}):
                 # Compute Pattern Noise for the SN clusters
                 if 'pn_social' not in skip:
                     for cluster in clusters:
-                        ses.update_and_log_status('computing pattern noise ({} cluster {})'.format(cluster.type, cluster.label))
+                        ses.update_and_log_status(cluster.type, 50)
                         cluster_pattern_noise(cluster)
 
         # Link clusters between each other
@@ -119,7 +130,7 @@ def process(ses_id: str, options: dict = {'skip': []}):
             #     for other in other_tokens:
             #         link_types(ses, token, other)
 
-        ses.update_and_log_status('completed')
+        ses.update_and_log_status('final')
     except Exception as e:
         # If any exception is raised while processing the session, catch it here and signal it
         import traceback

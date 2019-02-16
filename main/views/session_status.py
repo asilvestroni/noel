@@ -8,6 +8,8 @@ import os
 
 from django.views.generic import View
 from django.shortcuts import render, redirect, get_object_or_404
+
+from main.logic.common import const
 from main.models import Session, Picture, SocialToken, PictureCluster
 from main.logic.process_session import process
 
@@ -23,16 +25,13 @@ class SessionStatusView(View):
         # Obtain session ID from url query
         ses = get_object_or_404(Session, pk=id)
         tokens = SocialToken.objects.filter(session=ses)
-
         # This page should not be available if no tokens were given, abort the session
         if tokens.count() == 0:
-            ses.status = "invalid session"
+            ses.stage = const.session_statuses['error']
             ses.save()
 
         # Trigger session processing if this is the first visit
-        if ses.status == "initial status":
-            ses.status = "waiting to be processed"
-            ses.save()
+        if ses.stage == const.session_statuses['wait']:
             skip = os.environ.get('SESSION_SKIP')
             options = dict(skip=skip.split(' ') if skip else [])
             process.delay(ses.id, options)

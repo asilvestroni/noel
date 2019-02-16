@@ -12,6 +12,7 @@ from django.shortcuts import get_object_or_404
 from uuid import uuid4 as uuid
 from django.views.generic import View
 
+from main.logic.common import const
 from main.models import Session, Picture
 
 
@@ -47,7 +48,7 @@ class ManagePicturesView(View):
         try:
             session = Session.objects.get(id=request.session.get('session_id'))
         except Session.DoesNotExist:
-            session = Session(id=uuid().__str__(), status='initial status')
+            session = Session(id=uuid().__str__(), stage=const.session_statuses['wait'], status='Inizializzazione in corso')
             session.save()
             request.session['session_id'] = session.id
         files = request.FILES.getlist('filepond')

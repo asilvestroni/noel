@@ -75,7 +75,6 @@ def clusterize(ses: Session, cluster_type: str) -> List[PictureCluster]:
     pictures = Picture.objects.filter(session=ses, type=cluster_type, status=status_extracted)
 
     matrix_path = 'storage/{}/{}/distance_matrix.npy'.format(ses.id, cluster_type)
-    ses.update_and_log_status('computing distance matrix ({})'.format(cluster_type))
 
     # Compute distances
     matrix = compute_distance_matrix()

@@ -27,10 +27,3 @@ def timeit(method):
         return result
 
     return timed
-
-
-def get_session_progress(status: str):
-    if status == session_statuses['wait']:
-        return 0
-
-    return -1
