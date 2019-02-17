@@ -139,10 +139,9 @@ def extract_from_pic(pic_id: int, type: str):
     pic = Picture.objects.get(id=pic_id)
     pic.extract()
 
-    total = pic.session.picture_set.exclude(status=const.status_invalid_size).filter(type=pic.type)
-    done = total.filter(status=const.status_extracted).count()
+    total = pic.session.picture_set.exclude(status=const.status_invalid_size).filter(type=pic.type).count()
 
-    pic.session.update_and_log_status(type, done/total.count()*100)
+    pic.session.update_and_log_status(type, 1/total*100)
 
 
 @timeit
