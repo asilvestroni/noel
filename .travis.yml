@@ -1,9 +1,13 @@
 language: python
-cache: pip
+cache:
+  pip: true
+  directories:
+    - noel-bm3d-executable/
 python:
   - "3.6"
 install:
   - pip install -r requirements.txt
+  - ./get_bm3d_executable.sh
 before_script:
   - psql -c 'create database django_test;' -U postgres
   - python manage.py makemigrations
@@ -13,9 +17,9 @@ jobs:
     - stage: test
       script:
         - python manage.py test main.tests
-#    - stage: build
-#      script:
-#        - make docker-build
+    - stage: build
+      script:
+        - make docker-build
 env:
   global:
     - POSTGRES_DB=django_test
