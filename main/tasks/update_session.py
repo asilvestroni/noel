@@ -1,8 +1,12 @@
-import main.models as models
+from celery import shared_task
+
 import main.logic.common.const as const
+from main.models import Session
 
 
-def next_session_status(session: models.Session, step: str = '', progress: float = 0):
+@shared_task
+def next_session_status(session_id: str, step: str = '', progress: float = 0):
+    session = Session.objects.get(id=session_id)
     sn_count = session.socialtoken_set.count()
     if session.stage == const.session_statuses['wait']:
         session.stage = const.session_statuses['gather']
@@ -12,21 +16,22 @@ def next_session_status(session: models.Session, step: str = '', progress: float
             session.stage = const.session_statuses['process']
             status = 'Processing immagini'
         else:
-            session.progress += progress / (100 * sn_count) * 10
+            session.progress += (progress / sn_count * 20)
             status = 'Acquisizione immagini da {}'.format(step)
     elif session.stage == const.session_statuses['process']:
         if step == 'final':
             session.stage = const.session_statuses['cluster']
             status = 'Clustering immagini'
         else:
-            session.progress += progress / (100 * (sn_count + 1)) * 70
+            session.progress += (progress / (sn_count + 1) * 70)
             status = 'Processing immagini {}'.format(step)
     elif session.stage == const.session_statuses['cluster']:
         if step == 'final':
             session.stage = const.session_statuses['done']
+            session.progress = 100
             status = 'Completata'
         else:
-            session.progress += progress / (100 * (sn_count + 1)) * 20
+            session.progress += (progress / sn_count * 10)
             status = 'Clustering immagini {}'.format(step)
     else:
         status = 'status non valido'

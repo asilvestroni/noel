@@ -117,3 +117,5 @@ run-local-server.sh
 proto*
 noel-bm3d-executable
 *.pem
+
+*.env

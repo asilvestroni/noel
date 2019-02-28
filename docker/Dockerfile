@@ -69,5 +69,4 @@ RUN chown user /usr/src/app -R
 
 ENV BM3D_DIRECTORY /usr/bm3d
 
-EXPOSE 8001
 CMD python3

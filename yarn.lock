@@ -1586,6 +1586,16 @@ file-loader@^2.0.0:
     loader-utils "^1.0.2"
     schema-utils "^1.0.0"
 
+filepond-plugin-image-resize@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-image-resize/-/filepond-plugin-image-resize-2.0.2.tgz#be29db736f2467f9b8457f9731ae08cd1b0b762b"
+  integrity sha512-UjM+dru03/OtWNSYql+sBj3bQJGnU19nwfCFeH8rXZj5pUzvxY0myjjQ0GQllugkGQld4igEGMyBeTJOjx0LsQ==
+
+filepond-plugin-image-transform@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/filepond-plugin-image-transform/-/filepond-plugin-image-transform-3.2.2.tgz#fef06b692c7e6bb93b18c4cb062194b6cbb98d1d"
+  integrity sha512-QHahrIckz1UBF/b36aTPk+WgExBpP467SyyXwwIeE5hQFsTrj5frGGDyfONAGbXFlN0DBDr9kKKQQUNjQ1Ny7Q==
+
 filepond@^4.1.4:
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/filepond/-/filepond-4.1.4.tgz#1def80459bfa4f29d4191b9ce22c34a487aaed8b"

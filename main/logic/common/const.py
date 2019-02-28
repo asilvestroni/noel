@@ -8,14 +8,24 @@
 sizes = dict(width=1024, height=1024)
 
 session_statuses = {
-    'error':   'Errore',
-    'wait':    'In attesa',
-    'gather':  'Fetch delle immagini',
-    'process': 'Lavorazione immagini',
-    'cluster': 'Raggruppamento immagini',
-    'done':    'Completata'
+    'error':   'error',
+    'wait':    'waiting',
+    'gather':  'gathering',
+    'process': 'processing',
+    'cluster': 'clustering',
+    'done':    'completed'
     }
 
+picture_statuses = {
+    'invalid_size':  'invalid size',
+    'invalid_noise': 'invalid_noise',
+    'wait':          'waiting',
+    'preprocessing': 'preprocessing',
+    'preprocessed':  'preprocessed',
+    'extracting':    'extracting',
+    'extracted':     'extracted',
+    'done':          'completed'
+    }
 status_invalid_size = 'invalid size'
 result_invalid_noise = 'invalid noise'
 status_extracted = 'extracted'

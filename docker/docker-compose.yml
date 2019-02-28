@@ -12,6 +12,9 @@ services:
       - /home/silas/webdev/noel/static:/usr/src/app/static
       - storage:/usr/src/app/storage
       - /home/silas/webdev/noel/main:/usr/src/app/main
+      - /home/silas/webdev/noel/noel:/usr/src/app/noel
+    expose:
+      - 8001
     command: gunicorn --reload --bind 0.0.0.0:8001 noel.wsgi
 
   workers-session:
@@ -23,7 +26,20 @@ services:
     volumes:
       - storage:/usr/src/app/storage
       - /home/silas/webdev/noel/main:/usr/src/app/main
-    command: celery -A noel worker -l info -c 2 -Q default -n worker_default@%h
+      - /home/silas/webdev/noel/noel:/usr/src/app/noel
+    command: celery -A noel worker -l info -c 4 -Q session -n worker_session@%h
+
+  workers-status:
+    image: noel
+    depends_on:
+      - web
+    env_file:
+      - common.env
+    volumes:
+      - storage:/usr/src/app/storage
+      - /home/silas/webdev/noel/main:/usr/src/app/main
+      - /home/silas/webdev/noel/noel:/usr/src/app/noel
+    command: celery -A noel worker -l info -c 1 -Q status -n worker_status@%h
 
   workers-extract:
     image: noel
@@ -34,7 +50,8 @@ services:
     volumes:
       - storage:/usr/src/app/storage
       - /home/silas/webdev/noel/main:/usr/src/app/main
-    command: celery -A noel worker -l info -c 5 -Q extract -n worker_default@%h
+      - /home/silas/webdev/noel/noel:/usr/src/app/noel
+    command: celery -A noel worker -l info -c 5 -Q extract -n worker_extract@%h
 
   nginx:
     image: nginx:alpine
@@ -51,7 +68,8 @@ services:
 
   redis:
     image: redis:alpine
-
+    ports:
+      - 6379:6379
   postgres:
     image: postgres:alpine
     env_file:

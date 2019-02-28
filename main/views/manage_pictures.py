@@ -7,8 +7,7 @@ from os import path
 
 from django.core.files.uploadedfile import UploadedFile
 from django.core.handlers.wsgi import WSGIRequest
-from django.http import JsonResponse, HttpResponse
-from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
 from uuid import uuid4 as uuid
 from django.views.generic import View
 

@@ -10,10 +10,10 @@ from typing import Callable
 
 import main.logic.social.facebook as fb
 
-from .common import status_extracted, generate_thumbnails
-from .common.pics import pics_residual_noise, cluster_pattern_noise
-from .social.clustering import clusterize
-from .social.linking import link_types
+from main.logic.common import status_extracted, generate_thumbnails
+from main.logic.common.pics import pics_residual_noise, cluster_pattern_noise
+from main.logic.social.clustering import clusterize
+from main.logic.social.linking import link_types
 
 from main.models import Picture, SocialToken, PictureCluster, Session
 
@@ -24,7 +24,6 @@ logger = get_task_logger(__name__)
 
 
 # Session processing: defines the workflow for each session based on the given options
-# TODO: find a better way to handle statuses and status changes
 @shared_task
 def process(ses_id: str, options: dict = {'skip': []}):
     """
@@ -59,7 +58,6 @@ def process(ses_id: str, options: dict = {'skip': []}):
             # Add social download handlers here
             if len(tokens) > 0:
                 fetch_pictures('facebook', fb.handle_downloads)
-                ses.update_and_log_status('final')
 
         generate_thumbnails(ses)
 
@@ -67,6 +65,7 @@ def process(ses_id: str, options: dict = {'skip': []}):
         if 'social_download' not in skip:
             ses.update_and_log_status()
             handle_social_downloads()
+            ses.update_and_log_status('final')
 
         # Creates the cluster where all original pictures will be contained
         original_cluster = PictureCluster.objects.get_or_create(session=ses, type='original',
@@ -115,7 +114,7 @@ def process(ses_id: str, options: dict = {'skip': []}):
                 # Compute Pattern Noise for the SN clusters
                 if 'pn_social' not in skip:
                     for cluster in clusters:
-                        ses.update_and_log_status(cluster.type, 50)
+                        ses.update_and_log_status(cluster.type, 0.5)
                         cluster_pattern_noise(cluster)
 
         # Link clusters between each other
@@ -131,6 +130,9 @@ def process(ses_id: str, options: dict = {'skip': []}):
             #         link_types(ses, token, other)
 
         ses.update_and_log_status('final')
+        if ses.progress > 99:
+            ses.progress = 100
+            ses.save()
     except Exception as e:
         # If any exception is raised while processing the session, catch it here and signal it
         import traceback

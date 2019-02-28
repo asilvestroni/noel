@@ -20,7 +20,6 @@ def handle_downloads(ses: Session, token: SocialToken):
         :param ses: Session to which pictures belong
         :param token: Facebook SocialToken
         """
-    # TODO: handle missing token
 
     # Connects to Facebook's GraphAPI
     graph = facebook.GraphAPI(access_token=token.key)
@@ -29,7 +28,7 @@ def handle_downloads(ses: Session, token: SocialToken):
         try:
             # Send a custom request for pictures and make a list with their urls
             pics = list(map(lambda p: p['images'][0]['source'], graph.request(
-                'me/photos/uploaded?fields=images&limit={}'.format(const.fb_max_pictures)).get('data')))
+                    'me/photos/uploaded?fields=images&limit={}'.format(const.fb_max_pictures)).get('data')))
 
             n_pics = len(pics)
 
@@ -41,9 +40,8 @@ def handle_downloads(ses: Session, token: SocialToken):
             makedirs(pics_dir + '/noises', exist_ok=True)
 
             for pic in enumerate(pics):
-                ses.update_and_log_status('facebook',
-                                          1 / n_pics * 100)  # 'Gathering Facebook Pictures: {}/{}'.format(pic[0] + 1, n_pics))
                 model = Picture.objects.create(session=ses, type='facebook')
                 download_pic(model, pic[1])
+                ses.update_and_log_status('facebook', 1 / n_pics)
         except Exception as e:
             print(e)

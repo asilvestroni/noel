@@ -9,9 +9,6 @@ from django.core.validators import RegexValidator
 from django.db import models
 
 
-# from main.logic.common.funcs import get_session_progress
-
-
 class Session(models.Model):
     """
     Model that represents a Session on the system. It is created when the user submits their photos through the index's
@@ -49,6 +46,6 @@ class Session(models.Model):
         :param step: session stage step that has been reached
         :param progress: stage progress
         """
-        from main.logic.update_session import next_session_status
-        status = next_session_status(self, step=step, progress=progress)
+        from main.tasks.update_session import next_session_status
+        status = next_session_status.delay(self.id, step=step, progress=progress)
         print('[{}]: {} +{}%'.format(self.id, status, progress))

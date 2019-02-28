@@ -7,11 +7,11 @@
 import os
 
 from django.views.generic import View
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 
 from main.logic.common import const
 from main.models import Session, Picture, SocialToken, PictureCluster
-from main.logic.process_session import process
+from main.tasks.process_session import process
 
 
 class SessionStatusView(View):
@@ -34,6 +34,7 @@ class SessionStatusView(View):
         if ses.stage == const.session_statuses['wait']:
             skip = os.environ.get('SESSION_SKIP')
             options = dict(skip=skip.split(' ') if skip else [])
+            print('calling delay')
             process.delay(ses.id, options)
 
         # Fill up the context dictionary with data needed for the template

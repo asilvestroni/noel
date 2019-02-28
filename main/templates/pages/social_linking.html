@@ -1,54 +1,56 @@
 {% extends "generics/centered_container.html" %}
 
-{% block centered_title %}
-Linking Social Networks
+{% block title %}
+    Link Social Networks
 {% endblock %}
 
 {% block centered_content %}
-<div class="w-full m-2">
-    <p class="p-3 bg-primary border-b-2 bg-primary border-b-2 border-primary-dark rounded text-white font-bold">
-        Social Auth
-    </p>
-</div>
-<div class="w-full">
-    <div id="fb-root"></div>
-    <script>(function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s);
-        js.id = id;
-        js.src = 'https://connect.facebook.net/it_IT/sdk.js#xfbml=1&version=v3.0&appId={{ fb_app_id }}&autoLogAppEvents=1';
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-    </script>
-
-    {% csrf_token %}
-    <div class="border border-grey-light bg-grey-lightest flex flex-col items-center justify-center text-primary-dark font-bold p-4 mb-4 ">
-        <p class="mb-2">
-            Per poter continuare devi collegare <span class="text-primary-darker">almeno</span> un account social tra quelli
-            selezionabili qui di seguito.
-        </p>
-        <div class="fb-login-button text-white flex items-center justify-center bg-facebook mb-2" data-width="200px"
-             data-max-rows="1"
-             data-size="large"
-             data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false"
-             data-use-continue-as="true" data-scope="user_photos" data-onlogin="saveToken"
-             style="font-size: 16px; height: 40px; width: 240px">
-            Caricamento...
-        </div>
-        <p class="text-sm font-normal mt-4">
-            Nota: autorizzando l'accesso ai tuoi account accontenti all'utilizzo delle tue foto pubblicate su questo applicativo a fini di
-            studio, ai sensi del disclaimer presente in homepage.
+    <div class="w-full m-2">
+        <p class="p-3 bg-primary border-b-2 bg-primary border-b-2 border-primary-dark rounded text-white font-bold">
+            Social Auth
         </p>
     </div>
-    <form class="flex flex-row items-center justify-center">
-        <button id="start-button"
-                class="bg-primary px-4 py-2 text-white rounded-full hover:bg-primary-darker hover:shadow cursor-not-allowed mx-2"
-                disabled
-                type="button"
-        >
-            Avvia
-        </button>
-    </form>
-</div>
+    <div class="w-full">
+        <div id="fb-root"></div>
+        <script>(function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = 'https://connect.facebook.net/it_IT/sdk.js#xfbml=1&version=v3.0&appId={{ fb_app_id }}&autoLogAppEvents=1';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        </script>
+
+        {% csrf_token %}
+        <div class="border border-grey-light bg-grey-lightest flex flex-col items-center justify-center text-primary-dark font-bold p-4 mb-4 ">
+            <p class="mb-2">
+                Per poter continuare devi collegare <span class="text-primary-darker">almeno</span> un account social
+                tra quelli
+                selezionabili qui di seguito.
+            </p>
+            <div class="fb-login-button text-white flex items-center justify-center bg-facebook mb-2" data-width="200px"
+                 data-max-rows="1"
+                 data-size="large"
+                 data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false"
+                 data-use-continue-as="true" data-scope="user_photos" data-onlogin="saveToken"
+                 style="font-size: 16px; height: 40px; width: 240px">
+                Caricamento...
+            </div>
+            <p class="text-sm font-normal mt-4">
+                Nota: autorizzando l'accesso ai tuoi account accontenti all'utilizzo delle tue foto pubblicate su questo
+                applicativo a fini di
+                studio, ai sensi del disclaimer presente in homepage.
+            </p>
+        </div>
+        <form class="flex flex-row items-center justify-center">
+            <button id="start-button"
+                    class="bg-primary px-4 py-2 text-white rounded-full hover:bg-primary-darker hover:shadow cursor-not-allowed mx-2"
+                    disabled
+                    type="button"
+            >
+                Avvia
+            </button>
+        </form>
+    </div>
 {% endblock %}

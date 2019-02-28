@@ -1,11 +1,16 @@
 {% extends 'generics/page.html' %}
+
+{% block title %}
+    Resoconto
+{% endblock %}
+
 {% block content %}
     <div class="w-full flex flex-col items-center justify-center my-4">
         <div class="flex flex-col rounded w-2/3 mb-4 p-2 bg-grey-lighter">
             <div class="w-full">
                 <div class="p-3 bg-primary border-b-2 border-primary-dark rounded text-white font-bold flex flex-row flex-wrap justify-between">
                     <span class="mx-2">Sessione {{ session.id }}</span>
-                    <a href="/reset/{{ session.id }}" class="mx-2 px-2 font-bold text-red bg-white">RESET STATUS</a>
+                    {#                    <a href="/reset/{{ session.id }}" class="mx-2 px-2 font-bold text-red bg-white">RESET STATUS</a>#}
                     <div class="loading-indicator status-loading"><span>Aggiornamento...</span></div>
                 </div>
             </div>
@@ -16,11 +21,13 @@
                     {% endfor %}
                 </div>
                 <h3 class="session-status capitalize mb-2">{{ session.status }}</h3>
-                <div id="session-progress-bar" class="h-8 bg-white w-full relative rounded"
+                <div id="session-progress-bar"
                      data-session-id="{{ session.id }}">
-                    <div class="bar h-full bg-primary-light rounded" style="width: {{ session.progress }}%"></div>
-                    <div class="progress-label"><span
-                            class="percentage">{{ session.progress|floatformat:"0" }}</span></div>
+                    <div class="bar{% if session.progress < 100 %} animate{% endif %}"
+                         style="width: {{ session.progress }}%"></div>
+                    <div class="progress-label">
+                        <span class="percentage">{{ session.progress|floatformat:"0" }}</span>
+                    </div>
                 </div>
                 <hr class="h-px w-full bg-grey">
                 <div class="h-86 w-full flex flex-wrap overflow-y-scroll">

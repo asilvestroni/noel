@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     # 'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
-]
+    ]
 
 MIDDLEWARE = [
     # 'django.middleware.security.SecurityMiddleware',
@@ -47,27 +47,27 @@ MIDDLEWARE = [
     # 'django.contrib.auth.middleware.AuthenticationMiddleware',
     # 'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    ]
 
 ROOT_URLCONF = 'noel.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
+        'BACKEND':  'django.template.backends.django.DjangoTemplates',
+        'DIRS':     [
             'main/templates'
-        ],
+            ],
         'APP_DIRS': True,
-        'OPTIONS': {
+        'OPTIONS':  {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 # 'django.contrib.auth.context_processors.auth',
                 # 'django.contrib.messages.context_processors.messages',
-            ],
+                ],
+            },
         },
-    },
-]
+    ]
 
 WSGI_APPLICATION = 'noel.wsgi.application'
 
@@ -76,14 +76,14 @@ WSGI_APPLICATION = 'noel.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB') or 'noel',
-        'USER': os.environ.get('POSTGRES_USER') or 'noel',
+        'ENGINE':   'django.db.backends.postgresql',
+        'NAME':     os.environ.get('POSTGRES_DB') or 'noel',
+        'USER':     os.environ.get('POSTGRES_USER') or 'noel',
         'PASSWORD': os.environ.get('POSTGRES_PASS') or 'postgres',
-        'HOST': os.environ.get('POSTGRES_URL') or 'localhost',
-        'PORT': '5432'
+        'HOST':     os.environ.get('POSTGRES_URL') or 'localhost',
+        'PORT':     '5432'
+        }
     }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -135,9 +135,10 @@ CSRF_FAILURE_VIEW = csrf_failure
 # CELERY_BROKER_URL = 'redis://localhost'
 
 CELERY_TASK_ROUTES = {
-    'main.logic.process_session.process': {'queue': 'default'},
-    'main.logic.common.pics.extract_from_pic': {'queue': 'extract'}
-}
+    'main.tasks.process_session.process':            {'queue': 'session'},
+    'main.tasks.update_session.next_session_status': {'queue': 'status'},
+    'main.logic.common.pics.extract_from_pic':       {'queue': 'extract'},
+    }
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
